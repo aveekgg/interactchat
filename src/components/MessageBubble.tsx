@@ -46,7 +46,21 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
           <img src={message.imageUrl} alt="Message" className="message-image" />
         )}
 
-        <p className="message-text">{message.content}</p>
+        {(message.showText === undefined || message.showText) && (
+          <p className="message-text">{message.content}</p>
+        )}
+
+        {message.showText === false && (
+          <div className="voice-playing-indicator">
+            <div className="voice-wave">
+              <div className="wave-bar"></div>
+              <div className="wave-bar"></div>
+              <div className="wave-bar"></div>
+              <div className="wave-bar"></div>
+            </div>
+            <span className="voice-text">Speaking...</span>
+          </div>
+        )}
 
         {message.form && (
           <div className="message-form">
@@ -65,6 +79,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
           <div className="message-cart">
             <CartDisplay
               cart={message.cart}
+              onProductClick={onProductClick}
               onUpdateQuantity={(productId: string, quantity: number, selectedSize?: string, selectedColor?: string) =>
                 handleCartUpdate('update_quantity', { productId, quantity, selectedSize, selectedColor })
               }

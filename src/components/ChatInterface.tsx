@@ -7,6 +7,10 @@ import MessageBubble from './MessageBubble';
 import VoiceInput from './VoiceInput';
 import ProductDetail from './ProductDetail';
 import Settings from './Settings';
+import { HamburgerMenu } from './HamburgerMenu';
+import { CartPage } from './CartPage';
+import { AddressPage } from './AddressPage';
+import { WishlistPage } from './WishlistPage';
 import './ChatInterface.css';
 
 const chatService = new ChatService(true); // Try to use AI by default
@@ -41,6 +45,9 @@ const ChatInterface: React.FC = () => {
   const [showSettings, setShowSettings] = useState(false);
   const [isAIMode, setIsAIMode] = useState(chatService.isAIEnabled());
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [showCartPage, setShowCartPage] = useState(false);
+  const [showAddressPage, setShowAddressPage] = useState(false);
+  const [showWishlistPage, setShowWishlistPage] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -86,7 +93,8 @@ const ChatInterface: React.FC = () => {
         quickReplies: response.quickReplies,
         imageUrl: response.imageUrl,
         form: response.form,
-        cart: response.cart
+        cart: response.cart,
+        showText: !response.shouldSpeak // Hide text initially if voice will play
       };
 
       setMessages(prev => [...prev, botMessage]);
@@ -97,6 +105,12 @@ const ChatInterface: React.FC = () => {
         setIsSpeaking(true);
         ttsService.speak(response.text, () => {
           setIsSpeaking(false);
+          // Show text after voice synthesis completes
+          setMessages(prev => prev.map(msg => 
+            msg.id === botMessage.id 
+              ? { ...msg, showText: true }
+              : msg
+          ));
         });
       }
     } catch (error) {
@@ -244,6 +258,12 @@ const ChatInterface: React.FC = () => {
               <path d="M4.22 4.22l4.24 4.24m5.28 5.28l4.24 4.24M19.78 4.22l-4.24 4.24m-5.28 5.28l-4.24 4.24" strokeWidth="2" strokeLinecap="round"/>
             </svg>
           </button>
+          <HamburgerMenu
+            cart={cartService.getCart()}
+            onCartClick={() => setShowCartPage(true)}
+            onAddressClick={() => setShowAddressPage(true)}
+            onWishlistClick={() => setShowWishlistPage(true)}
+          />
         </div>
       </div>
 
@@ -330,6 +350,18 @@ const ChatInterface: React.FC = () => {
           onAIModeChange={handleAIModeChange}
           currentAIMode={isAIMode}
         />
+      )}
+
+      {showCartPage && (
+        <CartPage isOpen={showCartPage} onClose={() => setShowCartPage(false)} />
+      )}
+
+      {showAddressPage && (
+        <AddressPage isOpen={showAddressPage} onClose={() => setShowAddressPage(false)} />
+      )}
+
+      {showWishlistPage && (
+        <WishlistPage isOpen={showWishlistPage} onClose={() => setShowWishlistPage(false)} />
       )}
     </div>
   );

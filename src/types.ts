@@ -38,6 +38,7 @@ export interface Message {
   imageUrl?: string;
   cart?: Cart;
   form?: FormData;
+  showText?: boolean; // Controls when text content is displayed (useful for voice-first responses)
 }
 
 export interface ChatResponse {

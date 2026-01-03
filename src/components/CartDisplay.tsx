@@ -7,6 +7,7 @@ interface CartDisplayProps {
   onUpdateQuantity?: (productId: string, quantity: number, selectedSize?: string, selectedColor?: string) => void;
   onRemoveItem?: (productId: string, selectedSize?: string, selectedColor?: string) => void;
   onClearCart?: () => void;
+  onProductClick?: (product: any) => void;
   showActions?: boolean;
   compact?: boolean;
 }
@@ -16,6 +17,7 @@ export const CartDisplay: React.FC<CartDisplayProps> = ({
   onUpdateQuantity,
   onRemoveItem,
   onClearCart,
+  onProductClick,
   showActions = true,
   compact = false
 }) => {
@@ -33,10 +35,15 @@ export const CartDisplay: React.FC<CartDisplayProps> = ({
 
   const formatPrice = (price: number) => `$${price.toFixed(2)}`;
 
-  const CartItemRow: React.FC<{ item: CartItem }> = ({ item }) => (
+  const CartItemRow: React.FC<{ item: CartItem; onProductClick?: (product: any) => void }> = ({ item, onProductClick }) => (
     <div className={`cart-item ${compact ? 'compact' : ''}`}>
       <div className="cart-item-image">
-        <img src={item.product.imageUrl} alt={item.product.name} />
+        <img 
+          src={item.product.imageUrl} 
+          alt={item.product.name} 
+          onClick={() => onProductClick?.(item.product)}
+          style={{ cursor: onProductClick ? 'pointer' : 'default' }}
+        />
       </div>
 
       <div className="cart-item-details">
@@ -103,7 +110,7 @@ export const CartDisplay: React.FC<CartDisplayProps> = ({
 
       <div className="cart-items">
         {cart.items.map((item, index) => (
-          <CartItemRow key={`${item.product.id}-${item.selectedSize}-${item.selectedColor}-${index}`} item={item} />
+          <CartItemRow key={`${item.product.id}-${item.selectedSize}-${item.selectedColor}-${index}`} item={item} onProductClick={onProductClick} />
         ))}
       </div>
 
