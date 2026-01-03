@@ -1,6 +1,7 @@
 .product-carousel {
   margin: 0.75rem 0 1rem 0;
   animation: fadeIn 0.4s ease-in;
+  position: relative;
 }
 
 .carousel-container {
@@ -10,29 +11,77 @@
   padding: 0.5rem 0;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
+  /* Hide scrollbars while maintaining scroll functionality */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
 }
 
 .carousel-container::-webkit-scrollbar {
-  height: 6px;
+  display: none; /* Chrome, Safari, and Opera */
 }
 
-.carousel-container::-webkit-scrollbar-track {
-  background: var(--background);
-  border-radius: 3px;
-}
-
-.carousel-container::-webkit-scrollbar-thumb {
+/* Add scroll indicators for mobile */
+.carousel-scroll-indicator {
+  display: none;
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 4px;
   background: var(--border-color);
-  border-radius: 3px;
+  border-radius: 2px;
+  opacity: 0.5;
 }
 
-.carousel-container::-webkit-scrollbar-thumb:hover {
-  background: var(--text-secondary);
+.carousel-container.has-scroll .carousel-scroll-indicator {
+  display: block;
 }
 
 @media (max-width: 768px) {
+  .product-carousel {
+    margin: 0.5rem -1rem 1rem -1rem;
+    padding: 0 1rem;
+  }
+
   .carousel-container {
     gap: 0.75rem;
     padding: 0.25rem 0;
+    /* Ensure full width usage */
+    margin: 0 -1rem;
+    padding: 0.25rem 1rem;
+  }
+
+  /* Add peek effect to show there's more content */
+  .carousel-container::before,
+  .carousel-container::after {
+    content: '';
+    flex: 0 0 1rem;
+  }
+}
+
+/* Scroll hint for mobile */
+.carousel-scroll-hint {
+  display: none;
+  text-align: center;
+  margin-top: 0.5rem;
+  opacity: 0.7;
+}
+
+.scroll-text {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  .carousel-scroll-hint {
+    display: block;
   }
 }

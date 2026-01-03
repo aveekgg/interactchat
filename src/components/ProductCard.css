@@ -199,12 +199,15 @@
 
 @media (max-width: 768px) {
   .product-card {
-    min-width: 260px;
-    max-width: 260px;
+    /* Use more viewport width on mobile for better visibility */
+    min-width: calc(85vw - 2rem);
+    max-width: calc(85vw - 2rem);
+    /* Ensure cards are large enough to be clearly visible */
+    flex-shrink: 0;
   }
 
   .product-image-container {
-    height: 240px;
+    height: 220px;
   }
 
   .product-info {
@@ -213,5 +216,16 @@
 
   .product-name {
     font-size: 0.9375rem;
+    line-height: 1.4;
+  }
+
+  .product-description {
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+
+  .view-button {
+    padding: 0.625rem 1.25rem;
+    font-size: 0.875rem;
   }
 }

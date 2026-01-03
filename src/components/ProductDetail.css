@@ -33,6 +33,9 @@
   position: relative;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
   animation: slideUp 0.3s ease-out;
+  /* Hide scrollbars while maintaining scroll functionality */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
 }
 
 @keyframes slideUp {
@@ -446,18 +449,5 @@
 
 /* Smooth scrolling */
 .product-detail-container::-webkit-scrollbar {
-  width: 8px;
-}
-
-.product-detail-container::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.product-detail-container::-webkit-scrollbar-thumb {
-  background: var(--border-color);
-  border-radius: 4px;
-}
-
-.product-detail-container::-webkit-scrollbar-thumb:hover {
-  background: var(--text-secondary);
+  display: none; /* Chrome, Safari, and Opera */
 }

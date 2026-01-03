@@ -6,7 +6,6 @@ import { cartService } from '../services/cartService';
 import MessageBubble from './MessageBubble';
 import VoiceInput from './VoiceInput';
 import ProductDetail from './ProductDetail';
-import Settings from './Settings';
 import { HamburgerMenu } from './HamburgerMenu';
 import { CartPage } from './CartPage';
 import { AddressPage } from './AddressPage';
@@ -42,8 +41,6 @@ const ChatInterface: React.FC = () => {
   const [inputValue, setInputValue] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [showSettings, setShowSettings] = useState(false);
-  const [isAIMode, setIsAIMode] = useState(chatService.isAIEnabled());
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [showCartPage, setShowCartPage] = useState(false);
   const [showAddressPage, setShowAddressPage] = useState(false);
@@ -174,11 +171,6 @@ const ChatInterface: React.FC = () => {
     setMessages(prev => [...prev, confirmationMessage]);
   };
 
-  const handleAIModeChange = (enabled: boolean) => {
-    chatService.setAIMode(enabled);
-    setIsAIMode(enabled);
-  };
-
   const handleFormSubmit = (formData: any) => {
     // Handle form submission - could send to backend or process locally
     console.log('Form submitted:', formData);
@@ -248,16 +240,9 @@ const ChatInterface: React.FC = () => {
           <div className="header-text">
             <h1>ShoeStore Assistant</h1>
             <p className="status">
-              {isProcessing ? 'Typing...' : isAIMode ? 'AI Mode ✨' : 'Online'}
+              {isProcessing ? 'Typing...' : 'Online'}
             </p>
           </div>
-          <button className="settings-button" onClick={() => setShowSettings(true)} title="Settings">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <circle cx="12" cy="12" r="3" strokeWidth="2"/>
-              <path d="M12 1v6m0 6v6M1 12h6m6 0h6" strokeWidth="2" strokeLinecap="round"/>
-              <path d="M4.22 4.22l4.24 4.24m5.28 5.28l4.24 4.24M19.78 4.22l-4.24 4.24m-5.28 5.28l-4.24 4.24" strokeWidth="2" strokeLinecap="round"/>
-            </svg>
-          </button>
           <HamburgerMenu
             cart={cartService.getCart()}
             onCartClick={() => setShowCartPage(true)}
@@ -341,14 +326,6 @@ const ChatInterface: React.FC = () => {
           onClose={handleCloseProductDetail}
           onAskQuestion={handleAskQuestion}
           onAddToCart={handleAddToCart}
-        />
-      )}
-
-      {showSettings && (
-        <Settings
-          onClose={() => setShowSettings(false)}
-          onAIModeChange={handleAIModeChange}
-          currentAIMode={isAIMode}
         />
       )}
 
