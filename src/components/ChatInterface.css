@@ -25,6 +25,11 @@
   position: relative;
 }
 
+/* Push hamburger menu to the extreme right */
+.header-content > :last-child {
+  margin-left: auto;
+}
+
 .settings-button {
   margin-left: auto;
   background: transparent;
